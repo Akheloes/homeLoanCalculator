@@ -1,19 +1,16 @@
 import express from 'express'
+import apiRouter from './src_clean/Frameworks/Web/index.js'
+import dependencies from './src_clean/config/projectDependencies.js'
 import mustacheExpress from 'mustache-express'
-import config from './config.js'
-import logToSyslog from './utils/logger.js'
+
 const app = express()
 
 app.engine('html', mustacheExpress())
 app.set('view engine', 'html')
-app.set('views', './src/views')
+app.set('views', './src_clean/Frameworks/Web') // @TODOFO
 
-import paymentController from './src/controllers/paymentController.js'
+const port = process.env.PORT || 3000
 
-app.use('/', paymentController)
+app.use('/', apiRouter(dependencies))
 
-app.listen(config.server.port, () => {
-  logToSyslog('info', `server running on port ${config.server.port}`)
-})
-
-export default app
+app.listen(port, () => console.log(`http://localhost:${port}`))
